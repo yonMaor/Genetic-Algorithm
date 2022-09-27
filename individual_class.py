@@ -88,6 +88,6 @@ class individual:
     ###########################################################################     
     def simple_diff_loss(self, original_image):
         diff = np.square((self.data - original_image)/self.MAX_COLOR_VALUE)
-        diff = np.sum(diff)/(self.size_x*self.size_y)
-        return diff
+        return np.sum(diff)/(self.size_x*self.size_y)
+
                  
