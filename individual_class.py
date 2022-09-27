@@ -3,7 +3,8 @@ import numpy as np
 
 class individual:
     def __init__(self, size_x, size_y, image_type, parenting_type, loss_type, mut_rate, parent1 = None, parent2 = None):
-        self.MAX_COLOR_VALUE = 255
+        #TODO: remove max_color_value from here, it needs to be defined at the simluation level
+        self.max_color_value = 255
         self.parenting_type = parenting_type
         self.image_type = image_type
         self.size_x = size_x
@@ -58,12 +59,12 @@ class individual:
                     data[ix, iy] = self.parent2.data[ix, iy]
                 # mut_flag = np.random.rand()
                 # if mut_flag < 0.05:
-                    # rand_value = np.random.randint(0, self.MAX_COLOR_VALUE)
+                    # rand_value = np.random.randint(0, self.max_color_value)
                     # data[ix, iy] = rand_value    
         for imut in range(0, int(self.mut_rate*100)):
             x_to_mut = np.random.randint(0, self.size_x)
             y_to_mut = np.random.randint(0, self.size_y)
-            rand_value = np.random.randint(0, self.MAX_COLOR_VALUE)
+            rand_value = np.random.randint(0, self.max_color_value)
             data[x_to_mut, y_to_mut] = rand_value 
         return data
     
@@ -78,16 +79,16 @@ class individual:
     # Decides how to calculate the loss for the individual
     ###########################################################################     
     def calc_score(self, original_image, loss_type):
-        if loss_type == "simple_diff":
-            self.score = self.simple_diff_loss(original_image)   
+        if loss_type == "mean_square_error_loss":
+            self.score = self.calc_mean_square_error_loss(original_image)
         else:
             print("Error in score calculation type - individual.calc_score - line 55")
 
     ###########################################################################
     # Calculates the loss with a simple least mean square
     ###########################################################################     
-    def simple_diff_loss(self, original_image):
-        diff = np.square((self.data - original_image)/self.MAX_COLOR_VALUE)
+    def calc_mean_square_error_loss(self, original_image):
+        diff = np.square((self.data - original_image)/self.max_color_value)
         return np.sum(diff)/(self.size_x*self.size_y)
 
                  
