@@ -1,22 +1,24 @@
 from individual_class import individual
 import numpy as np
-
+import logging
 class generation:
     
-    def __init__(self, gen_num, number_of_individuals, loss_tpye, original_image, gene_transfer_method, ratio_of_individuals_for_next_gen, prev_gen_ind_list, mut_rate):
+    def __init__(self, gen_num, number_of_individuals, loss_type, original_image, gene_transfer_method, ratio_of_individuals_for_next_gen, prev_gen_ind_list, mut_rate):
+        logging.info(f'Creating generation number {gen_num}')
+        self.gen_num = gen_num
         self.number_of_individuals = number_of_individuals
         self.gene_transfer_method = gene_transfer_method
-        self.loss_tpye = loss_tpye
+        self.loss_type = loss_type
         self.ratio_of_individuals_for_next_gen = ratio_of_individuals_for_next_gen
         self.mut_rate = mut_rate
         self.original_image = original_image
-        self.gen_num = gen_num
         self.max_score_ind = None
         self.max_score = 0
         self.median_score_ind = None
         self.min_score_ind = None
         self.min_score = 0
         self.ind_list = []
+        logging.info(f'Creating list of individuals for generation number {self.gen_num}')
         for iind in range(0, self.number_of_individuals):
             self.create_individual(prev_gen_ind_list)
 
@@ -37,7 +39,7 @@ class generation:
             parent1, parent2 = self.choose_parents(prev_gen_ind_list)
     
         size_x, size_y = self.original_image.shape
-        specimen = individual(size_x, size_y, image_type, self.gene_transfer_method, self.loss_tpye, self.mut_rate, parent1, parent2)
+        specimen = individual(size_x, size_y, image_type, self.gene_transfer_method, self.loss_type, self.mut_rate, parent1, parent2)
         self.add_individual(specimen)
     
     ###########################################################################
@@ -50,8 +52,9 @@ class generation:
     # Calculates the loss for each individual of the generation
     ###########################################################################          
     def calc_generation_score(self):
+        logging.info(f'Creating generation score for generation number {self.gen_num}')
         for iind in range(0, self.number_of_individuals):
-            self.ind_list[iind].calc_score(self.original_image, self.loss_tpye)
+            self.ind_list[iind].calc_score(self.original_image, self.loss_type)
         self.sort_ind_list()
         self.get_best_ind()
         self.get_worst_ind()
@@ -60,6 +63,7 @@ class generation:
     # Sorts the individuals list in this generation according to their score
     ###########################################################################      
     def sort_ind_list(self):
+        logging.info(f'Sorting individual list according to score')
         self.ind_list.sort(key=lambda ind: ind.score)         
         
     ###########################################################################
