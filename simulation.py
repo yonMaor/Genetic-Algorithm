@@ -1,7 +1,5 @@
 
-from individual_class import individual
 from generation_class import generation
-#import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
@@ -9,6 +7,8 @@ import logging
 logging.basicConfig(filename = 'test.log', filemode = 'w', format = '%(asctime)s - %(levelname)s - %(message)s', datefmt='%H:%M:%S', level=logging.DEBUG)
 
 logger = logging.getLogger()
+
+# TODO: set all constants in a constant/enumeration file
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
@@ -24,7 +24,6 @@ class Simulation:
 
         self.image = mpimg.imread(image_name)
         self.image = rgb2gray(self.image)
-
         self.loss_type = loss_type
         self.gene_transfer_method = gene_transfer_method
         self.individuals_per_generation = individuals_per_generation
