@@ -99,4 +99,3 @@ if __name__ == "__main__":
     plt.plot(sim.max_score_list)
     plt.ylim([0, 0.3])
     plt.savefig('test_fig.png')
-    print("HI")
