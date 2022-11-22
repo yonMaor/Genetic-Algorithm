@@ -1,17 +1,21 @@
-
-from generation_class import generation
-import matplotlib.pyplot as plt
+from generation_class import Generation
 import matplotlib.image as mpimg
 import numpy as np
 import logging
-logging.basicConfig(filename = 'test.log', filemode = 'w', format = '%(asctime)s - %(levelname)s - %(message)s', datefmt='%H:%M:%S', level=logging.DEBUG)
+
+logging.basicConfig(filename='test.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%H:%M:%S', level=logging.DEBUG)
 
 logger = logging.getLogger()
+
 
 # TODO: set all constants in a constant/enumeration file
 
 def rgb2gray(rgb):
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+    # TODO: Add this to a utils file
+    return np.dot(rgb[..., :3], [0.299, 0.587, 0.144])
+
+
 class Simulation:
     def __init__(self,
                  image_name,
@@ -21,7 +25,6 @@ class Simulation:
                  ratio_of_individuals_for_next_gen,
                  mutation_rate,
                  max_generation_num):
-
         self.image = mpimg.imread(image_name)
         self.image = rgb2gray(self.image)
         self.loss_type = loss_type
@@ -40,7 +43,7 @@ class Simulation:
         previous_generation_individual_list = []
         for iGen in range(0, self.max_generation_num):
             print(iGen)
-            gen = generation(iGen,
+            gen = Generation(iGen,
                              self.individuals_per_generation,
                              self.loss_type,
                              self.image,
@@ -60,6 +63,7 @@ class Simulation:
         self.min_score_list.append(gen.min_score)
         self.best_ind_list.append(gen.max_score_ind)
         self.worst_ind_list.append(gen.min_score_ind)
+
 
 if __name__ == "__main__":
     logger.info('Starting simulation')
@@ -81,7 +85,7 @@ if __name__ == "__main__":
                 f'max generation number: {max_generation_num}')
 
     image_name = "test_image6.jpg"
-    logger.info(f'The image that will be used for this simulation is {image_name}')
+    logger.info(f'Simulation will run on image {image_name}')
     sim = Simulation(image_name,
                      loss_type,
                      gene_transfer_method,
@@ -91,7 +95,3 @@ if __name__ == "__main__":
                      max_generation_num)
     logger.info('Running simulation')
     sim.run_simulation()
-
-
-
-
