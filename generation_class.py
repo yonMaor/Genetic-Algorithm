@@ -41,7 +41,7 @@ class Generation:
             parent1, parent2 = self.choose_parents(prev_gen_ind_list)
 
         size_x, size_y = self.original_image.shape
-        specimen = Individual(size_x, size_y, image_type, self.gene_transfer_method, self.loss_tpye, self.mut_rate,
+        specimen = Individual(size_x, size_y, image_type, self.gene_transfer_method, self.loss_type, self.mut_rate,
                               parent1, parent2)
         self.add_individual(specimen)
 

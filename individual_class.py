@@ -3,7 +3,7 @@ import numpy as np
 
 class Individual:
     def __init__(self, size_x, size_y, gen_type, parenting_type, loss_type, mut_rate, parent1=None, parent2=None):
-        # TODO: remove max_color_value from here, it needs to be defined at the simluation level
+        # TODO: remove max_color_value from here, it needs to be defined at the simulation level
         self.MAX_COLOR_VALUE = 255
         self.parenting_type = parenting_type
         self.image_type = gen_type
@@ -30,7 +30,7 @@ class Individual:
         elif self.image_type == "general":
             return self.choose_parenting_type()
         else:
-            print("Error in the image type - image.get_data_from_image - line 22")
+            print("Error in the image type - image.get_data_from_image")
 
     ###########################################################################
     # Chooses the method by which data is inherited from the parents to the 
@@ -46,7 +46,7 @@ class Individual:
         #        elif self.parenting_type == "random_weighted_average":
         #            return self.get_rand_weighted_average_genes()
         else:
-            print("Error in parenting type - individual.choose_parenting_type - line 32")
+            print("Error in parenting type - individual.choose_parenting_type")
 
     ###########################################################################
     # Returns child data with genes from both parent, distributed randomly
@@ -87,7 +87,7 @@ class Individual:
         if loss_type == "simple_diff":
             self.score = self.simple_diff_loss(original_image)
         else:
-            print("Error in score calculation type - individual.calc_score - line 55")
+            print("Error in score calculation type - individual.calc_score")
 
     ###########################################################################
     # Calculates the loss with a simple least mean square

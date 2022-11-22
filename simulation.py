@@ -1,4 +1,5 @@
 from generation_class import Generation
+import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import logging
@@ -68,13 +69,13 @@ class Simulation:
 if __name__ == "__main__":
     logger.info('Starting simulation')
 
-    loss_type = "mean_square_error_loss"
+    loss_type = "simple_diff"
     gene_transfer_method = "random_genes"
 
     individuals_per_generation = 50
     ratio_of_individuals_for_next_generation = 0.1
     mutation_rate = 0.05
-    max_generation_num = 1
+    max_generation_num = 2000
 
     logger.info(f'Simulation will run with the following paramters: \n'
                 f'loss type: {loss_type},\n '
@@ -95,3 +96,7 @@ if __name__ == "__main__":
                      max_generation_num)
     logger.info('Running simulation')
     sim.run_simulation()
+    plt.plot(sim.max_score_list)
+    plt.ylim([0, 0.3])
+    plt.savefig('test_fig.png')
+    print("HI")
