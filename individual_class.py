@@ -3,7 +3,7 @@ import numpy as np
 
 class Individual:
     def __init__(self, size_x, size_y, gen_type, parenting_type, loss_type, mut_rate, parent1=None, parent2=None):
-        #TODO: remove max_color_value from here, it needs to be defined at the simluation level
+        # TODO: remove max_color_value from here, it needs to be defined at the simluation level
         self.MAX_COLOR_VALUE = 255
         self.parenting_type = parenting_type
         self.image_type = gen_type
@@ -16,6 +16,7 @@ class Individual:
         self.data = self.get_individual_data()
 
     def __str__(self):
+        # TODO: Improve the returned string to be clearer
         return str(self.score)
 
     ###########################################################################
@@ -37,6 +38,7 @@ class Individual:
     ###########################################################################    
 
     def choose_parenting_type(self):
+        # TODO: This needs to be its own class
         if self.parenting_type == "random_genes":
             return self.get_random_parent_genes()
         elif self.parenting_type == "average":
@@ -50,6 +52,7 @@ class Individual:
     # Returns child data with genes from both parent, distributed randomly
     ###########################################################################            
     def get_random_parent_genes(self):
+        # TODO: break this function up
         gene = np.random.randint(1, 3, (self.size_x, self.size_y))
         data = np.zeros((self.size_x, self.size_y))
         for ix in range(0, self.size_x):
@@ -80,6 +83,7 @@ class Individual:
     # Decides how to calculate the loss for the individual
     ###########################################################################     
     def calc_score(self, original_image, loss_type):
+        # TODO: Score calculation should be its own class
         if loss_type == "simple_diff":
             self.score = self.simple_diff_loss(original_image)
         else:
