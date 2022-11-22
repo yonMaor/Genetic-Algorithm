@@ -11,13 +11,14 @@ class Individual:
         self.size_y = size_y
         self.parent1 = parent1
         self.parent2 = parent2
-        self.score = 0
+        self.score = None
         self.mut_rate = mut_rate
         self.data = self.get_individual_data()
 
     def __str__(self):
-        # TODO: Improve the returned string to be clearer
-        return str(self.score)
+        if self.score is None:
+            return str(f'Individual of size {self.size_x}x{self.size_y} with no score yet')
+        return str(f'Individual of size {self.size_x}x{self.size_y} with score {self.score}')
 
     ###########################################################################
     # Creates the data for the individual (either randomly for first generation,
@@ -95,3 +96,14 @@ class Individual:
     def simple_diff_loss(self, original_image):
         diff = np.square((self.data - original_image) / self.MAX_COLOR_VALUE)
         return np.sum(diff) / (self.size_x * self.size_y)
+
+
+if __name__ == "__main__":
+    loss_type = None
+    mut_rate = 0.05
+    size = 10
+    parent1 = Individual(size, size, "first_gen", "random_genes", loss_type, mut_rate)
+    parent2 = Individual(size, size, "first_gen", "random_genes", loss_type, mut_rate)
+    ind = Individual(size, size, "first_gen", "random_genes", loss_type, mut_rate, parent1, parent2)
+    string = ind.__str__()
+    print(string)
