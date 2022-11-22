@@ -3,6 +3,7 @@ import numpy as np
 
 class Individual:
     def __init__(self, size_x, size_y, gen_type, parenting_type, loss_type, mut_rate, parent1=None, parent2=None):
+        #TODO: remove max_color_value from here, it needs to be defined at the simluation level
         self.MAX_COLOR_VALUE = 255
         self.parenting_type = parenting_type
         self.image_type = gen_type

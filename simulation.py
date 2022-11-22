@@ -3,6 +3,10 @@ from generation_class import generation
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
+import logging
+logging.basicConfig(filename = 'test.log', filemode = 'w', format = '%(asctime)s - %(levelname)s - %(message)s', datefmt='%H:%M:%S', level=logging.DEBUG)
+
+logger = logging.getLogger()
 
 # TODO: set all constants in a constant/enumeration file
 
@@ -51,60 +55,42 @@ class Simulation:
             previous_generation_individual_list = gen.ind_list
 
     def update_result_lists(self, gen):
+        logger.info(f'Updating results lists for generation number {gen.gen_num}')
         self.max_score_list.append(gen.max_score)
         self.min_score_list.append(gen.min_score)
         self.best_ind_list.append(gen.max_score_ind)
         self.worst_ind_list.append(gen.min_score_ind)
 
 if __name__ == "__main__":
+    logger.info('Starting simulation')
+
+    loss_type = "mean_square_error_loss"
+    gene_transfer_method = "random_genes"
+
+    individuals_per_generation = 50
+    ratio_of_individuals_for_next_generation = 0.1
+    mutation_rate = 0.05
+    max_generation_num = 1
+
+    logger.info(f'Simulation will run with the following paramters: \n'
+                f'loss type: {loss_type},\n '
+                f'gene transfer method from parent to child: {gene_transfer_method},\n '
+                f'individuals per generation: {individuals_per_generation}, \n'
+                f'ratio of individuals for the next generation: {ratio_of_individuals_for_next_generation}, \n'
+                f'mutation rate: {mutation_rate}, \n'
+                f'max generation number: {max_generation_num}')
+
     image_name = "test_image6.jpg"
-    # image = rgb2gray(image)
-
-    LOSS_TYPE = "simple_diff"
-    GENE_TRANSFER_METHOD = "random_genes"
-
-    INDIVIDUALS_PER_GENERATION = 50
-    RATIO_OF_INDIVIDUALS_FOR_NEXT_GEN = 0.1
-    MUTATION_RATE = 0.05
-    MAX_GENERATION_NUM = 500
-
+    logger.info(f'The image that will be used for this simulation is {image_name}')
     sim = Simulation(image_name,
-                     LOSS_TYPE,
-                     GENE_TRANSFER_METHOD,
-                     INDIVIDUALS_PER_GENERATION,
-                     RATIO_OF_INDIVIDUALS_FOR_NEXT_GEN,
-                     MUTATION_RATE,
-                     MAX_GENERATION_NUM)
+                     loss_type,
+                     gene_transfer_method,
+                     individuals_per_generation,
+                     ratio_of_individuals_for_next_generation,
+                     mutation_rate,
+                     max_generation_num)
+    logger.info('Running simulation')
     sim.run_simulation()
-
-    # gen = generation(0, IND_NUM_PER_GEN, LOSS_TYPE, origin, PARENTING_TYPE, PARENT_RATIO, [], MUT_RATE)
-    #
-    # gen.calc_generation_score()
-    # gen.get_best_ind()
-    # max_score_list = []
-    # min_score_list = []
-    # best_ind_list = []
-    # worst_ind_list = []
-    #
-    # max_score_list.append(gen.max_score)
-    # min_score_list.append(gen.min_score)
-    # best_ind_list.append(gen.max_score_ind)
-    # worst_ind_list.append(gen.min_score_ind)
-    #
-    # for igen in range(0, MAX_GEN):
-    #     print(igen)
-    #     gen.calc_generation_score()
-    #     gen.sort_ind_list()
-    #     gen.get_best_ind()
-    #     gen.get_worst_ind()
-    #     print(gen)
-    #     plt.imshow(gen.ind_list[0].data, cmap = 'gray')
-    #     # plt.show()
-    #     max_score_list.append(gen.max_score)
-    #     min_score_list.append(gen.min_score)
-    #     best_ind_list.append(gen.max_score_ind)
-    #     worst_ind_list.append(gen.min_score_ind)
-    #     gen = generation(igen, IND_NUM_PER_GEN, LOSS_TYPE, origin, PARENTING_TYPE, PARENT_RATIO, gen.ind_list, MUT_RATE)
 
 
 
