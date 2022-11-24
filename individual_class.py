@@ -4,6 +4,7 @@ import numpy as np
 class Individual:
     def __init__(self, size_x, size_y, gen_type, parenting_type, loss_type, mut_rate, parent1=None, parent2=None):
         # TODO: remove max_color_value from here, it needs to be defined at the simulation level
+        # TODO: remove loss_type from function inputs
         self.MAX_COLOR_VALUE = 255
         self.parenting_type = parenting_type
         self.image_type = gen_type
@@ -13,6 +14,7 @@ class Individual:
         self.parent2 = parent2
         self.score = None
         self.mut_rate = mut_rate
+        #TODO: find better name for data
         self.data = self.get_individual_data()
 
     def __str__(self):
@@ -26,6 +28,7 @@ class Individual:
     # or from parents for subsequenct generations)
     ###########################################################################
     def get_individual_data(self):
+        # TODO: Choosing parenting type should not occur here
         if self.image_type == "first_gen":
             return np.random.randint(0, 255, (self.size_x, self.size_y))
         elif self.image_type == "general":
@@ -41,7 +44,7 @@ class Individual:
     def choose_parenting_type(self):
         # TODO: This needs to be its own class
         if self.parenting_type == "random_genes":
-            return self.get_random_parent_genes()
+            return self.get_genes_from_parents_random()
         elif self.parenting_type == "average":
             return self.get_average_parent_genes()
         #        elif self.parenting_type == "random_weighted_average":
@@ -52,25 +55,31 @@ class Individual:
     ###########################################################################
     # Returns child data with genes from both parent, distributed randomly
     ###########################################################################            
-    def get_random_parent_genes(self):
-        # TODO: break this function up
-        gene = np.random.randint(1, 3, (self.size_x, self.size_y))
-        data = np.zeros((self.size_x, self.size_y))
-        for ix in range(0, self.size_x):
-            for iy in range(0, self.size_y):
-                if gene[ix, iy] == 1:
-                    data[ix, iy] = self.parent1.data[ix, iy]
-                else:
-                    data[ix, iy] = self.parent2.data[ix, iy]
-                # mut_flag = np.random.rand()
-                # if mut_flag < 0.05:
-                # rand_value = np.random.randint(0, self.MAX_COLOR_VALUE)
-                # data[ix, iy] = rand_value
-        for imut in range(0, int(self.mut_rate * 100)):
+
+    def choose_genes_from_each_parent(self):
+        return np.random.randint(1, 3, (self.size_x, self.size_y))
+
+    def set_gene_mutations(self, data):
+        # TODO: This function can probably be written more elegantly without a for loop
+        for _ in range(0, int(self.mut_rate * 100)):
             x_to_mut = np.random.randint(0, self.size_x)
             y_to_mut = np.random.randint(0, self.size_y)
             rand_value = np.random.randint(0, self.MAX_COLOR_VALUE)
             data[x_to_mut, y_to_mut] = rand_value
+        return data
+
+    def get_genes_from_parents_random(self):
+        #TODO: find better name for gene
+        which_parent_gives_gene = self.choose_genes_from_each_parent()
+        data = np.zeros((self.size_x, self.size_y))
+        for ix in range(0, self.size_x):
+            for iy in range(0, self.size_y):
+                if which_parent_gives_gene[ix, iy] == 1:
+                    data[ix, iy] = self.parent1.data[ix, iy]
+                else:
+                    data[ix, iy] = self.parent2.data[ix, iy]
+
+        data = self.set_gene_mutations(data)
         return data
 
     ###########################################################################
